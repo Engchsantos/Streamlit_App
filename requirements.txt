@@ -4,5 +4,4 @@ plotly==5.24.1
 plotly-express==0.4.1
 requests==2.31.0
 streamlit==1.40.0
-ta-lib-bin
 yfinance==0.2.48
