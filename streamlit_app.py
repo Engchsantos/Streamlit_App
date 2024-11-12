@@ -19,7 +19,7 @@ analise_page = st.Page(
     icon=":material/analytics:",
 )
 dashboard_page = st.Page(
-    "views/dashboard.py",
+    "views/dash.py",
     title="Dashboard IPEA",
     icon=":material/database:",
 )
