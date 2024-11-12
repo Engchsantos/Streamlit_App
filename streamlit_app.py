@@ -18,7 +18,7 @@ analise_page = st.Page(
     title="Análise",
     icon=":material/analytics:",
 )
-dashboard_page = st.Page(
+dash_page = st.Page(
     "views/dash.py",
     title="Dashboard IPEA",
     icon=":material/database:",
@@ -40,7 +40,7 @@ chatbot_page = st.Page(
 pg = st.navigation(
     {
         "Inicio": [inicio_page],
-        "Menu": [sobre_page, analise_page, dashboard_page, dashboard_fin_page, chatbot_page],
+        "Menu": [sobre_page, analise_page, dash_page, dashboard_fin_page, chatbot_page],
     }
 )
 
