@@ -1,22 +1,26 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import talib as ta
+from models.DataAccess_class import DataAccess
+from controllers.Dashboard_controller import Dashboard_controller
 
-df = pd.read_csv('data/df.csv')
+consultor = DataAccess()
+controller = Dashboard_controller()
 
-df['ds'] = pd.to_datetime(df['ds'])
+df = consultor.get_brent_data()
 
-semanal = df.set_index('ds').resample('1W').mean()['y']
-semanal = semanal.reset_index()
+df = controller.ajust_data(df=df)
 
+diario = df.copy()
+semanal = controller.calcula_semanal(df)
+mensal = controller.calcula_semanal(df)
+anual = controller.calcula_semanal(df)
 
-mensal = df.set_index('ds').resample('1M').mean()['y']
-mensal = mensal.reset_index()
-
-
-anual = df.set_index('ds').resample('1Y').mean()['y']
-anual = anual.reset_index()
+df_temporal = []
+df_temporal.append(diario)
+df_temporal.append(semanal)
+df_temporal.append(mensal)
+df_temporal.append(anual)
 
 st.title(f"Petróleo Brent", anchor=False)
 
@@ -56,37 +60,15 @@ selection = st.segmented_control(
     options=option_map.keys(),
     format_func=lambda option: option_map[option],
     selection_mode="single",
+    default=0
 )
 
-if selection == 0:
-
-    dados = df
-    select = df.ds.between(intervalo[0], intervalo[1])
-    dados = dados[select]
-
-if selection == 1:
-
-    dados = semanal
-    select = semanal.ds.between(intervalo[0], intervalo[1])
-    dados = dados[select]
-
-if selection == 2:
-
-    dados = mensal
-    select = mensal.ds.between(intervalo[0], intervalo[1])
-    dados = dados[select]
-
-if selection == 3:
-
-    dados = anual
-    select = anual.ds.between(intervalo[0], intervalo[1])
-    dados = dados[select]
+select = df_temporal[selection].ds.between(intervalo[0], intervalo[1])
+dados = df_temporal[selection][select]
 
 
 
 #plotando o gráfico
-
-
 fig = px.line(dados, x='ds',y = 'y')
 fig.update_layout(title = 'Preço do Petróleo Brent')
 fig.update_xaxes(title = 'Data')

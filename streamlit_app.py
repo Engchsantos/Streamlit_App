@@ -1,54 +1,32 @@
 import streamlit as st
+import json
 
+# Leitura de itens do menu
+file_path = 'menu.json'
+with open(file_path, 'r', encoding='utf-8') as file:
+    menu_pages = json.load(file)
 
-# --- PAGE SETUP ---
-sobre_page = st.Page(
-    "views/sobre.py",
-    title="Sobre",
-    icon=":material/account_circle:",
-    default=True,
-)
-inicio_page = st.Page(
-    "views/inicio.py",
-    title="Início",
-    icon=":material/house:",
-)
-analise_page = st.Page(
-    "views/analise.py",
-    title="Análise",
-    icon=":material/analytics:",
-)
-dash_page = st.Page(
-    "views/dash1.py",
-    title="Dashboard IPEA",
-    icon=":material/database:",
-)
-dashboard_fin_page = st.Page(
-    "views/dash_fin.py",
-    title="Dashboard Financeiro",
-    icon=":material/monitoring:",
-)
-chatbot_page = st.Page(
-    "views/chatbot.py",
-    title="Chat Bot",
-    icon=":material/smart_toy:",
-)
-# --- NAVIGATION SETUP [WITHOUT SECTIONS] ---
-# pg = st.navigation(pages=[about_page, project_1_page, project_2_page])
-
-# --- NAVIGATION SETUP [WITH SECTIONS]---
+# Criação dos itens do menu
+menu = []
+pages_folder = 'views/'
+icons_folder = ':material/'
+for key, menu_page in menu_pages.items():
+    menu.append(
+        st.Page(
+            pages_folder + menu_page['file'],
+            title=menu_page['title'],
+            icon=icons_folder + menu_page['icon']
+        )
+    )
 pg = st.navigation(
     {
-        "Inicio": [inicio_page],
-        "Menu": [sobre_page, analise_page, dash_page, dashboard_fin_page, chatbot_page],
+        "Inicio": [menu[0]],
+        "Menu": menu[1:],
     }
 )
 
-
-# --- SHARED ON ALL PAGES ---
+# Itens estáticos
 st.logo("assets/logo.png")
 st.sidebar.markdown("Acesse o código no [Github](https://github.com/Engchsantos/Streamlit_App)")
 
-
-# --- RUN NAVIGATION ---
 pg.run()
