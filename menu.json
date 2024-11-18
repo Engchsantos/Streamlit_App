@@ -1,0 +1,32 @@
+{
+    "inicio":{
+        "title": "Início",
+        "file": "inicio.py",
+        "icon": "house:"
+    },
+    "sobre":{
+        "title": "Sobre",
+        "file": "sobre.py",
+        "icon": "account_circle:"
+    },
+    "analise":{
+        "title": "Análise",
+        "file": "analise.py",
+        "icon": "analytics:"
+    },
+    "dashboard":{
+        "title": "Dashboard IPEA",
+        "file": "dashboard.py",
+        "icon": "database:"
+    },
+    "dash_fin":{
+        "title": "Dashboard Financeiro",
+        "file": "dash_fin.py",
+        "icon": "monitoring:"
+    },
+    "chatbot":{
+        "title": "Chat Bot",
+        "file": "chatbot.py",
+        "icon": "smart_toy:"
+    }
+}
