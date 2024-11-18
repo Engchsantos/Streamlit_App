@@ -3,7 +3,7 @@ streamlit==1.40.0
 
 # Bibliotecas de análise e manipulação de dados
 pandas==2.1.2
-numpy==1.25.2
+numpy==1.26.0
 
 # Visualização de dados
 plotly==5.24.1
@@ -12,6 +12,9 @@ plotly==5.24.1
 yfinance==0.2.48
 pandas-datareader==0.10.0
 requests==2.31.0
+
+# TA-Lib para análise técnica
+TA-Lib==0.4.0
 
 # Utilitários essenciais
 setuptools>=65.5.0
