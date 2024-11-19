@@ -1,7 +1,18 @@
-pandas==2.1.2
-pandas-datareader==0.10.0
-plotly==5.24.1
-plotly-express==0.4.1
-requests==2.31.0
+# Streamlit core
 streamlit==1.40.0
+
+# Bibliotecas de análise e manipulação de dados
+pandas==2.1.2
+numpy==1.26.0
+
+# Visualização de dados
+plotly==5.24.1
+
+# Dados financeiros e APIs
 yfinance==0.2.48
+pandas-datareader==0.10.0
+requests==2.31.0
+
+# Utilitários essenciais
+setuptools>=65.5.0
+wheel>=0.41.0
