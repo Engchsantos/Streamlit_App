@@ -28,5 +28,10 @@
         "title": "Chat Bot",
         "file": "chatbot.py",
         "icon": "smart_toy:"
+    },
+    "previsao":{
+        "title": "Previsão",
+        "file": "predicao.py",
+        "icon": "monitoring:"
     }
 }
