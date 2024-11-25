@@ -3,6 +3,7 @@ streamlit==1.40.0
 
 # Bibliotecas de análise e manipulação de dados
 pandas==2.1.2
+xlsxwriter
 numpy==1.26.0
 
 # Visualização de dados

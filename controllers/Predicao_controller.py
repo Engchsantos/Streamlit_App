@@ -9,47 +9,49 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from pipelines.PipelineClasses import PrepareData, FillNANValues, SomthDataIntervalValues
 from sklearn.pipeline import Pipeline
-import joblib
+import io
 
 class Predicao_controller:
     def __init__(self):
         pass
+    
+    def to_excel(self, df):
+        output = io.BytesIO()
+        with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+            df.to_excel(writer, index=False, sheet_name='Sheet1')
+        processed_data = output.getvalue()
+        return processed_data
 
+    def calcula_erro(self, predicao, real, modelo):
+        def symetric_mean_absolute_percentage_error(actual, predicted) -> float:
+            return round( 
+                np.mean( 
+                    np.abs(predicted - actual) / 
+                    ((np.abs(predicted) + np.abs(actual))/2) 
+                )*100, 2
+            )
+            
+        mae = mean_absolute_error(real, predicao)
+        rmse = mean_squared_error(real, predicao)
+        smape = symetric_mean_absolute_percentage_error(real, predicao)
+        retorno = {
+            'modelo': modelo,
+            'mae': mae,
+            'rmse': rmse,
+            'smape %': smape
+        }
+
+        return retorno
+
+    def process_pipeline_normalize_data(self, df):
+        pipeline = Pipeline([
+            ('data_prepator', PrepareData()),
+            ('filler_nan_values', FillNANValues())
+        ])
+        df_pipeline = pipeline.fit_transform(df)
+        return df_pipeline
+    
     def realiza_predicao(self, df, tam_previsao=15, recorte_arima=365):
-
-        def calcula_erro(predicao, real, modelo):
-            def symetric_mean_absolute_percentage_error(actual, predicted) -> float:
-                if not all([isinstance(actual, np.ndarray),  
-                            isinstance(predicted, np.ndarray)]): 
-                    actual, predicted = np.array(actual), 
-                    np.array(predicted) 
-            
-                return round( 
-                    np.mean( 
-                        np.abs(predicted - actual) / 
-                        ((np.abs(predicted) + np.abs(actual))/2) 
-                    )*100, 2
-                )
-            
-            mae = mean_absolute_error(real, predicao)
-            rmse = mean_squared_error(real, predicao)
-            smape = symetric_mean_absolute_percentage_error(real, predicao)
-            retorno = {
-                'modelo': modelo,
-                'mae': mae,
-                'rmse': rmse,
-                'smape %': smape
-            }
-
-            return retorno
-        
-        def process_pipeline_normalize_data(df):
-            pipeline = Pipeline([
-                ('data_prepator', PrepareData()),
-                ('filler_nan_values', FillNANValues())
-            ])
-            df_pipeline = pipeline.fit_transform(df)
-            return df_pipeline
 
         def process_pipeline_arima(df):
             pipeline = Pipeline([
@@ -62,7 +64,6 @@ class Predicao_controller:
         
         def predicao_arima(df, tam_previsao, recorte_arima):
             df_pipeline = process_pipeline_arima(df.copy()).head(recorte_arima)
-            print(df_pipeline)
             df_arima = df_pipeline['Preço - petróleo bruto - Brent (FOB)'].reset_index()
             df_arima = df_arima.reset_index()
             df_arima['unique_id'] = 'Brent'
@@ -77,7 +78,7 @@ class Predicao_controller:
             forecast_dfa.dropna(inplace=True)
 
             #preparação dos dados para plotagem
-            valores_reais = process_pipeline_normalize_data(df.copy())[-7:]
+            valores_reais = self.process_pipeline_normalize_data(df.copy())[-7:]
             valores = pd.Series()
             for prediction in forecast_dfa.values:
                 df_log = np.log(valores_reais) #escala logarítmica
@@ -99,7 +100,7 @@ class Predicao_controller:
             return previsao_arima
 
         def predicao_LSTM(df, previsao_arima, tam_previsao):
-            df_tensorflow_arima = process_pipeline_normalize_data(df.copy())
+            df_tensorflow_arima = self.process_pipeline_normalize_data(df.copy())
             df_tensorflow_arima = pd.DataFrame(df_tensorflow_arima)
             df_tensorflow_arima.reset_index(inplace=True)
             df_tensorflow_arima.rename(columns={'index': 'ds', 'Preço - petróleo bruto - Brent (FOB)': 'y'}, inplace=True)
