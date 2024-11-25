@@ -30,7 +30,7 @@
         "icon": "smart_toy:"
     },
     "previsao":{
-        "title": "Previsão",
+        "title": "Predição do Petróleo Brent",
         "file": "predicao.py",
         "icon": "monitoring:"
     }

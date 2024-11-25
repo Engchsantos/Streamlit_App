@@ -4,6 +4,7 @@ streamlit==1.40.0
 # Bibliotecas de análise e manipulação de dados
 pandas==2.1.2
 numpy==1.26.0
+xlsxwriter
 
 # Visualização de dados
 plotly==5.24.1
@@ -17,8 +18,11 @@ requests==2.31.0
 setuptools>=65.5.0
 wheel>=0.41.0
 
-#modelos
+# Modelos de predição e aprendizado de máquina
 statsforecast==1.5.0
 tensorflow==2.17.1
 scikit-learn==1.3.1
 joblib==1.3.2
+
+# Bibliotecas adicionais necessárias para funcionalidades específicas
+streamlit-js-eval==0.0.4  # Para streamlit_js_eval
