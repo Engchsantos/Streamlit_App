@@ -11,7 +11,12 @@ predicter = Predicao_controller()
 # Função para carregar e processar os dados com cache
 @st.cache_data
 def carregar_dados():
-    data = reader.get_brent_data().head(1095)  # 3 anos
+    try:
+        data = reader.get_brent_data_firebase("2020-01-01") # 3 anos
+        print('consultou firebase')
+    except:
+        data = reader.get_brent_data().head(1095)  # 3 anos
+        print('consulta local caso o firebase esteja indisponíel')
     data.columns = ['Data', 'Preço - petróleo bruto - Brent (FOB)']
     dados_trabalhados = predicter.process_pipeline_normalize_data(data.copy()).reset_index(name='Preço - petróleo bruto - Brent (FOB)')
     dados_trabalhados.rename(columns={'index': 'Data'}, inplace=True)
