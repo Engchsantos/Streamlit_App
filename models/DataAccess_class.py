@@ -1,6 +1,4 @@
 import pandas as pd
-import firebase_admin
-from firebase_admin import credentials, db
 from google.cloud import firestore
 import tomli
 import tempfile
