@@ -13,7 +13,11 @@ predicter = Predicao_controller()
 def carregar_dados():
     try:
         data = reader.get_brent_data_firebase("2020-01-01") # 3 anos
-        print('consultou firebase')
+        if(data is None):
+            data = reader.get_brent_data().head(1095)  # 3 anos
+            print('consulta local caso o firebase esteja indisponíel')
+        else:
+            print('consultou firebase')
     except:
         data = reader.get_brent_data().head(1095)  # 3 anos
         print('consulta local caso o firebase esteja indisponíel')
