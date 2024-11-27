@@ -3,9 +3,9 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-df1 = pd.read_csv('producao_e_consumo.csv', skiprows=4, sep=',')
-df2 = pd.read_csv('estoque.csv', skiprows=4, sep=',')
-df3 = pd.read_csv('balanco_estoque.csv', skiprows=4, sep=',')
+df1 = pd.read_csv('data/producao_e_consumo.csv', skiprows=4, sep=',')
+df2 = pd.read_csv('data/estoque.csv', skiprows=4, sep=',')
+df3 = pd.read_csv('data/balanco_estoque.csv', skiprows=4, sep=',')
 
 
 df1['Month'] = pd.to_datetime(df1['Month'])
