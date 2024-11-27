@@ -30,7 +30,4 @@ st.markdown(
         garantem retorno de investimento</i></b></p>",  unsafe_allow_html=True
     )
 
-st.image('worker-oil-rig-sunset-created-with-generative-ai-technology.jpg', caption="Imagem do freepik")
-
-
-
+st.image('assets/worker-oil-rig-sunset-created-with-generative-ai-technology.jpg', caption="Imagem do freepik")
