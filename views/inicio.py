@@ -1,17 +1,36 @@
 import streamlit as st
 
-st.markdown("<p style='text-align: center; color:red; font-size:54px'> Seja bem vindo! </p>",  unsafe_allow_html=True)
+st.title('Petróleo Brent: Dados e Previsões para Investidores')
+
+
+st.markdown("<br></br><p style='text-align: center; color:red; font-size:50px'>Descubra como investir melhor!</p><br></br>",  unsafe_allow_html=True)
 
 st.markdown(
-        "<p style='text-align: center; color:gray; font-size:24px'><b> Aqui você encontrará informações sobre os preços do petróleo Brent, qua auxiliarão na sua tomada de decisão.</b> </p>",  unsafe_allow_html=True
+        "<p style='text-align: justify; color:gray; font-size:25px'><b>\
+            No competitivo mercado de petróleo, informação é poder. Antecipar as flutuações de preço\
+            do Brent é crucial para o sucesso. Nossa consultoria desenvolveu a ferramenta ideal para\
+            ajudá-lo a tomar decisões estratégicas em seus investimentos.</b></p>",  unsafe_allow_html=True
     )
 
 st.markdown(
-"<p style='text-align: justify; color:gray; font-size:18px'> Nossa consultoria é especializada em criação de ferramentas para análise de dados, auxiliando investidores a adotarem as melhores estratégias em seus investimentos. Para isso, utilizamos tecnologias avançadas de Machine Learning, com modelos capazes de fazer previsões bastante precisas.</p>",  unsafe_allow_html=True
+        "<p style='text-align: justify; color:gray; font-size:25px'>\
+            Utilizamos avançadas técnicas de machine learning para criar um sistema de previsão\
+            sofisticado e um dashboard intuitivo com informações relevantes, incluindo cenários\
+            geopolíticos, crises econômicas e flutuações na demanda. Essas informações lhe darão a vantagem\
+            competitiva necessária para tomar decisões mais assertivas.</p>",  unsafe_allow_html=True
     )
-
 st.markdown(
-"<p style='text-align: justify; color:gray; font-size:18px'> No menu ao lado, você encontrará informações relevantes sobre a variação do preço do petróleo, como situações geopolíticas, crises econômicas e demanda por energia. Também temos um dashboard que reúne diversos indicadores financeiros para ajudar a identificar o comportamento do mercado. </p>",  unsafe_allow_html=True
+        "<p style='text-align: justify; color:gray; font-size:25px'>Acesse o menu ao lado para explorar nossos\
+          recursos e começar a investir com mais confiança!</p>",  unsafe_allow_html=True
+    )
+st.markdown("<p style='text-align: center; color:red; font-size:50px'></p>",  unsafe_allow_html=True)
+st.markdown(
+        "<p style='text-align: center; color:black; font-size:20px'><b><i>Isenção de responsabilidade: \
+        As informações aqui apresentadas são para fins de análise e suporte à tomada de decisão e não \
+        garantem retorno de investimento</i></b></p>",  unsafe_allow_html=True
     )
 
-st.image("assets/worker-oil-rig-sunset-created-with-generative-ai-technology.jpg", caption="Imagem do freepik")
+st.image('worker-oil-rig-sunset-created-with-generative-ai-technology.jpg', caption="Imagem do freepik")
+
+
+
