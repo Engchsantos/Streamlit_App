@@ -12,19 +12,19 @@ predicter = Predicao_controller()
 @st.cache_data
 def carregar_dados():
     try:
-        data = reader.get_brent_data_firebase("2020-01-01") # 3 anos
+        data = reader.get_brent_data_firebase("2021-01-01") # 3 anos
         if(data is None):
-            data = reader.get_brent_data().head(1095)  # 3 anos
+            data = reader.get_brent_data()  # 3 anos
             print('consulta local caso o firebase esteja indisponíel')
         else:
             print('consultou firebase')
     except:
-        data = reader.get_brent_data().head(1095)  # 3 anos
+        data = reader.get_brent_data()  # 3 anos
         print('consulta local caso o firebase esteja indisponíel')
-    data.columns = ['Data', 'Preço - petróleo bruto - Brent (FOB)']
+    data.rename(columns={'ds': 'Data', 'y': 'Preço - petróleo bruto - Brent (FOB)'}, inplace=True)
     dados_trabalhados = predicter.process_pipeline_normalize_data(data.copy()).reset_index(name='Preço - petróleo bruto - Brent (FOB)')
     dados_trabalhados.rename(columns={'index': 'Data'}, inplace=True)
-    return dados_trabalhados
+    return dados_trabalhados.tail(1095)
 
 # Função para calcular a validação do modelo com cache
 @st.cache_data

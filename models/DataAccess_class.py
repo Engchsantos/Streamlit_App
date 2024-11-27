@@ -26,8 +26,7 @@ class DataAccess:
         data_list = []
         
         try:
-            # Aplicar filtro para "data" > 2020-01-01
-            query = client.collection(collection_name).where("data", ">", data_inicial)
+            query = client.collection(collection_name).where("data", ">", pd.to_datetime(data_inicial))
             docs = query.stream()
             
             for doc in docs:
@@ -37,10 +36,10 @@ class DataAccess:
             # Criar DataFrame com os dados filtrados
             df = pd.DataFrame(data_list)
             df.rename(columns={'valor': 'y', 'data': 'ds'}, inplace=True)
-            df['ds'] = pd.to_datetime(df['ds']).dt.date
+            df['ds'] = pd.to_datetime(df['ds'], format="%Y-%m-%d", errors="coerce").dt.date
             df['y'] = pd.to_numeric(df['y'])
             df.sort_values(by='ds', ascending=False, inplace=True)
-            
+            df.reset_index(drop=True, inplace=True)
             return df
         except Exception as e:
             print(f"Erro ao acessar o Firestore: {e}")
