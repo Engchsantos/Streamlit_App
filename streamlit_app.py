@@ -15,7 +15,8 @@ for key, menu_page in menu_pages.items():
         st.Page(
             pages_folder + menu_page['file'],
             title=menu_page['title'],
-            icon=icons_folder + menu_page['icon']
+            icon=icons_folder + menu_page['icon'],
+            default=bool(menu_page['default'])
         )
     )
 pg = st.navigation(

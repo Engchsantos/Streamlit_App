@@ -2,36 +2,31 @@
     "inicio":{
         "title": "Início",
         "file": "inicio.py",
-        "icon": "house:"
+        "icon": "house:",
+        "default": 1
     },
     "sobre":{
         "title": "Sobre",
         "file": "sobre.py",
-        "icon": "account_circle:"
+        "icon": "account_circle:",
+        "default": 0
     },
     "analise":{
         "title": "Análise",
         "file": "analise.py",
-        "icon": "analytics:"
+        "icon": "analytics:",
+        "default": 0
     },
     "dashboard":{
         "title": "Dashboard IPEA",
         "file": "dashboard.py",
-        "icon": "database:"
-    },
-    "dash_fin":{
-        "title": "Dashboard Financeiro",
-        "file": "dash_fin.py",
-        "icon": "monitoring:"
-    },
-    "chatbot":{
-        "title": "Chat Bot",
-        "file": "chatbot.py",
-        "icon": "smart_toy:"
+        "icon": "database:",
+        "default": 0
     },
     "previsao":{
         "title": "Predição do Petróleo Brent",
         "file": "predicao.py",
-        "icon": "monitoring:"
+        "icon": "monitoring:",
+        "default": 0
     }
 }

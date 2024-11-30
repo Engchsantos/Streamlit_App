@@ -30,3 +30,4 @@ streamlit-js-eval>=0.1.0
 # Consulta de dados
 google-cloud-firestore
 tomli-w
+tomli==2.0.1
