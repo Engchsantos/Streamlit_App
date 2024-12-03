@@ -6,14 +6,27 @@ from models.DataAccess_class import DataAccess
 
 consultor = DataAccess()
 
-df1 = pd.read_csv('data/producao_e_consumo.csv', skiprows=4, sep=',')
-df2 = pd.read_csv('data/estoque.csv', skiprows=4, sep=',')
-df3 = pd.read_csv('data/balanco_estoque.csv', skiprows=4, sep=',')
+producao = pd.read_csv('prod_arabia.csv', sep = ',', skiprows=4)
+producao.columns = ('ds', 'qte')
+producao.ds = pd.to_datetime(producao['ds'])
+producao = producao.dropna()
+producao = producao.sort_values(by='ds', ascending=True)
+producao = producao.reset_index(drop=True)
+periodo = producao['ds']>='2020-01-01'
+producao_arabia = producao[periodo]
+
+df_prod_consumo = pd.read_csv('prod_consumo.csv', sep=',', skiprows=4)
+df_prod_consumo.columns = ('mes', 'producao', 'consumo')
+df_prod_consumo['mes'] = pd.to_datetime(df_prod_consumo['mes'])
+df_prod_consumo_passado = df_prod_consumo[df_prod_consumo['mes']<='2023-12-01']
+df_prod_consumo_futuro = df_prod_consumo[df_prod_consumo['mes']>='2024-11-01']
+
+df_estoque = pd.read_csv('estoque.csv', sep = ',', skiprows=4)
+df_estoque.columns = ('mes', 'quantidade')
+df_estoque['mes'] = pd.to_datetime(df_estoque['mes'])
+df_estoque_passado = df_estoque[df_estoque['mes']<='2024-06-01']
 
 
-df1['Month'] = pd.to_datetime(df1['Month'])
-df2['Month'] = pd.to_datetime(df2['Month'])
-df3['Month'] = pd.to_datetime(df3['Month'])
 df_analise_historica = consultor.get_brent_data()
 df_analise_historica['ds'] = pd.to_datetime(df_analise_historica['ds'])
 
@@ -49,19 +62,19 @@ with st.expander("Mostrar / Ocultar - Explicação"):
         )
 
 
-fig = go.Figure()
-fig.add_trace(go.Scatter(x=df1['Month'], y=df1['Total World Petroleum Production million barrels per day'],
+fig7 = go.Figure()
+fig7.add_trace(go.Scatter(x=df_prod_consumo_passado['mes'], y=df_prod_consumo_passado['producao'],
                     mode='lines',
                     name='Produção'))
-fig.add_trace(go.Scatter(x=df1['Month'], y=df1['Total World Petroleum Consumption million barrels per day'],
-                    mode='lines+markers',
+fig7.add_trace(go.Scatter(x=df_prod_consumo_passado['mes'], y=df_prod_consumo_passado['consumo'],
+                    mode='lines',
                     name='Consumo'))
-fig.update_layout(title = 'Variação da Produção e Consumo Mundial de Petróleo')
-fig.update_yaxes(title = 'Quantidade - mb/dia')
+fig7.update_layout(title = 'Produção e Consumo Mundial de Petróleo')
+fig7.update_yaxes(title = 'Quantidade - mb/dia')
 
 
-st.plotly_chart(fig, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
-
+st.plotly_chart(fig7, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
+st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
 
 
 st.subheader('Eventos Geopolíticos e Risco:')
@@ -70,40 +83,6 @@ with st.expander("Mostrar / Ocultar - Explicação"):
     st.markdown(
             "<p style='text-align: justify; color:gray; font-size:14px'>Eventos geopolíticos imprevisíveis podem causar flutuações significativas e repentinas nos preços do petróleo. Guerras, sanções internacionais, instabilidade política em países produtores importantes ou ameaças terroristas em instalações petrolíferas podem interromper o fornecimento de petróleo, reduzindo a oferta e levando a um aumento acentuado dos preços. Por exemplo, a invasão russa da Ucrânia em 2022 levou a temores de interrupções no fornecimento de energia da Rússia, resultando em um aumento significativo no preço do petróleo. Contrariamente, um acordo de paz ou uma redução da tensão geopolítica pode levar a uma queda nos preços, pois o mercado percebe um menor risco de interrupção no fornecimento.</p>",  unsafe_allow_html=True
         )
-
-
-st.subheader('Política de Produção (OPEP e outros):')
-
-with st.expander("Mostrar / Ocultar - Explicação"):
-    st.markdown(
-        "<p style='text-align: justify; color:gray; font-size:14px'>A produção de petróleo pelos países da OPEP e pelos grandes produtores não-OPEP desempenha um papel crucial na oferta global. Acordos da OPEP para reduzir a produção, muitas vezes para apoiar os preços, podem levar a um aumento nos preços do petróleo. A Arábia Saudita, por exemplo, frequentemente atua como um regulador, ajustando sua produção para influenciar os preços de mercado. Entretanto, se a OPEP aumentar a produção, ou se grandes produtores não-OPEP aumentarem sua produção de forma significativa (como ocorreu com os EUA no passado), a oferta aumenta, pressionando os preços para baixo. A cooperação entre a OPEP e países não-OPEP é crucial, e a falta de coordenação pode levar a flutuações abruptas nos preços.</p>",  unsafe_allow_html=True
-        )
-
-
-st.subheader('Níveis de Estoques e Capacidade de Armazenamento:')
-
-with st.expander("Mostrar / Ocultar - Explicação"):
-    st.markdown(
-            "<p style='text-align: justify; color:gray; font-size:14px'>Os níveis de estoques de petróleo bruto e produtos refinados em todo o mundo atuam como um amortecedor para as flutuações de preços. Grandes estoques geralmente indicam uma oferta abundante, pressionando os preços para baixo. Baixos níveis de estoques podem levar a preocupações com escassez e podem aumentar os preços, mesmo com uma oferta estável. A capacidade de armazenamento também é um fator importante; se os estoques se aproximam da capacidade máxima, isso pode criar uma pressão adicional de baixa nos preços. Inversamente, se os níveis de estoques caírem abaixo de um certo nível considerado confortável, pode gerar preocupações sobre uma oferta insuficiente, impulsionando os preços.</p>",  unsafe_allow_html=True
-        )
-
-fig4 = go.Figure()
-fig4.add_trace(go.Scatter(x=df2['Month'], y=df2['OECD Commercial Inventory million barrels'],
-                    mode='lines',
-                    name='Estoque'))
-fig4.update_layout(title = 'Níveis mundial de estoque de petróleo')
-fig4.update_yaxes(title = 'Quantidade - milhões de barris')
-
-
-
-st.plotly_chart(fig4, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
-
-st.subheader('Expectativas do Mercado e Especulação:')
-with st.expander("Mostrar / Ocultar - Explicação"):
-    st.markdown(
-            "<p style='text-align: justify; color:gray; font-size:14px'>As expectativas dos investidores e traders sobre futuros eventos, como mudanças na demanda ou na política de produção, podem influenciar significativamente os preços do petróleo. A especulação, particularmente no mercado de futuros, pode levar a grandes flutuações de preços, independentemente dos fundamentos de oferta e demanda. Notícias positivas sobre o crescimento econômico ou sobre novas tecnologias de energias renováveis podem levar a um aumento nos preços devido ao aumento da demanda esperada. Por outro lado, noticias negativas sobre a economia ou sobre um possível aumento significativo na oferta de petróleo no futuro podem levar os traders a venderem contratos futuros, causando uma queda nos preços, mesmo que a oferta e a demanda atuais permaneçam inalteradas.</p>",  unsafe_allow_html=True
-        )
-    
 st.subheader(f"Veja o impacto desses fatores nos principais períodos de oscilação do preço do petróleo Brent", divider='gray')
 
 dados = df_analise_historica
@@ -165,6 +144,49 @@ with st.expander("Mostrar / Ocultar - Explicação"):
     st.write(resumo)
 
 
+st.subheader('Política de Produção (OPEP e outros):')
+
+with st.expander("Mostrar / Ocultar - Explicação"):
+    st.markdown(
+        "<p style='text-align: justify; color:gray; font-size:14px'>A produção de petróleo pelos países da OPEP e pelos grandes produtores não-OPEP desempenha um papel crucial na oferta global. Acordos da OPEP para reduzir a produção, muitas vezes para apoiar os preços, podem levar a um aumento nos preços do petróleo. A Arábia Saudita, por exemplo, frequentemente atua como um regulador, ajustando sua produção para influenciar os preços de mercado. Entretanto, se a OPEP aumentar a produção, ou se grandes produtores não-OPEP aumentarem sua produção de forma significativa (como ocorreu com os EUA no passado), a oferta aumenta, pressionando os preços para baixo. A cooperação entre a OPEP e países não-OPEP é crucial, e a falta de coordenação pode levar a flutuações abruptas nos preços.</p>",  unsafe_allow_html=True
+        )
+fig6 = go.Figure()
+fig6.add_trace(go.Scatter(x=producao_arabia['ds'], y=producao_arabia['qte'],
+                    mode='lines',
+                    name='Produção'))
+fig6.update_layout(title = 'Produção de Petróleo na Arábia Saudita')
+fig6.update_yaxes(title = 'Quantidade - mb/dia')
+
+
+st.plotly_chart(fig6, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
+st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
+
+st.subheader('Níveis de Estoques e Capacidade de Armazenamento:')
+
+with st.expander("Mostrar / Ocultar - Explicação"):
+    st.markdown(
+            "<p style='text-align: justify; color:gray; font-size:14px'>Os níveis de estoques de petróleo bruto e produtos refinados em todo o mundo atuam como um amortecedor para as flutuações de preços. Grandes estoques geralmente indicam uma oferta abundante, pressionando os preços para baixo. Baixos níveis de estoques podem levar a preocupações com escassez e podem aumentar os preços, mesmo com uma oferta estável. A capacidade de armazenamento também é um fator importante; se os estoques se aproximam da capacidade máxima, isso pode criar uma pressão adicional de baixa nos preços. Inversamente, se os níveis de estoques caírem abaixo de um certo nível considerado confortável, pode gerar preocupações sobre uma oferta insuficiente, impulsionando os preços.</p>",  unsafe_allow_html=True
+        )
+
+fig4 = go.Figure()
+fig4.add_trace(go.Scatter(x=df_estoque_passado['mes'], y=df_estoque_passado['quantidade'],
+                    mode='lines',
+                    name='Produção'))
+fig4.update_layout(title = 'Níveis mundiais de estoque de petróleo')
+fig4.update_yaxes(title = 'Quantidade - milhões de barris')
+
+
+
+st.plotly_chart(fig4, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
+st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
+
+st.subheader('Expectativas do Mercado e Especulação:')
+with st.expander("Mostrar / Ocultar - Explicação"):
+    st.markdown(
+            "<p style='text-align: justify; color:gray; font-size:14px'>As expectativas dos investidores e traders sobre futuros eventos, como mudanças na demanda ou na política de produção, podem influenciar significativamente os preços do petróleo. A especulação, particularmente no mercado de futuros, pode levar a grandes flutuações de preços, independentemente dos fundamentos de oferta e demanda. Notícias positivas sobre o crescimento econômico ou sobre novas tecnologias de energias renováveis podem levar a um aumento nos preços devido ao aumento da demanda esperada. Por outro lado, noticias negativas sobre a economia ou sobre um possível aumento significativo na oferta de petróleo no futuro podem levar os traders a venderem contratos futuros, causando uma queda nos preços, mesmo que a oferta e a demanda atuais permaneçam inalteradas.</p>",  unsafe_allow_html=True
+        )
+    
+
 
 ########################### CÓDIGO PARA COLOCAR NO FINAL DA PÁGINA 'DASHBOARD IPEA' ##########################
 
@@ -193,3 +215,19 @@ with st.expander("Cenário esperado para próxima eleição"):
     st.write("Aumento na oferta: Trump prometeu expandir a produção de petróleo nos EUA, o que pode criar excedentes no mercado.")
     st.write("Demanda global fraca: Especialmente com o enfraquecimento econômico em regiões como a China, reduzindo a pressão sobre os preços.")
     st.write("Flexibilização fiscal: Incentivos aos combustíveis fósseis podem estimular mais produção, pressionando ainda mais os preços.")
+
+
+fig8 = go.Figure()
+fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_futuro['producao'],
+                    mode='lines',
+                    name='Produção'))
+fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_futuro['consumo'],
+                    mode='lines',
+                    name='Consumo'))
+fig8.update_layout(title = 'Previsão de Oferta e Demanda')
+fig8.update_yaxes(title = 'Quantidade - milhões de barris')
+
+
+
+st.plotly_chart(fig8, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
+st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
