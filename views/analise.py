@@ -6,7 +6,7 @@ from models.DataAccess_class import DataAccess
 
 consultor = DataAccess()
 
-producao = pd.read_csv('prod_arabia.csv', sep = ',', skiprows=4)
+producao = pd.read_csv('data/prod_arabia.csv', sep = ',', skiprows=4)
 producao.columns = ('ds', 'qte')
 producao.ds = pd.to_datetime(producao['ds'])
 producao = producao.dropna()
@@ -15,13 +15,13 @@ producao = producao.reset_index(drop=True)
 periodo = producao['ds']>='2020-01-01'
 producao_arabia = producao[periodo]
 
-df_prod_consumo = pd.read_csv('prod_consumo.csv', sep=',', skiprows=4)
+df_prod_consumo = pd.read_csv('data/prod_consumo.csv', sep=',', skiprows=4)
 df_prod_consumo.columns = ('mes', 'producao', 'consumo')
 df_prod_consumo['mes'] = pd.to_datetime(df_prod_consumo['mes'])
 df_prod_consumo_passado = df_prod_consumo[df_prod_consumo['mes']<='2023-12-01']
 df_prod_consumo_futuro = df_prod_consumo[df_prod_consumo['mes']>='2024-11-01']
 
-df_estoque = pd.read_csv('estoque.csv', sep = ',', skiprows=4)
+df_estoque = pd.read_csv('data/estoque.csv', sep = ',', skiprows=4)
 df_estoque.columns = ('mes', 'quantidade')
 df_estoque['mes'] = pd.to_datetime(df_estoque['mes'])
 df_estoque_passado = df_estoque[df_estoque['mes']<='2024-06-01']
