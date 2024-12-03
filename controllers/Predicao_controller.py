@@ -95,8 +95,8 @@ class Predicao_controller:
             dados_arima['AutoARIMA_result_mean'] = (dados_arima['AutoARIMA_result_dynamic'].values + dados_arima['AutoARIMA_result_static'].values)/2
             
             #salva dados de previsão para uso do tensorflow
-            previsao_arima = pd.DataFrame(dados_arima['AutoARIMA_result_dynamic'].reset_index())
-            previsao_arima.rename(columns={'AutoARIMA_result_dynamic': 'y'}, inplace=True)
+            previsao_arima = pd.DataFrame(dados_arima['AutoARIMA_result_mean'].reset_index())
+            previsao_arima.rename(columns={'AutoARIMA_result_mean': 'y'}, inplace=True)
             return previsao_arima
 
         def predicao_LSTM(df, previsao_arima, tam_previsao):
