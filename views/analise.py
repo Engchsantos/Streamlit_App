@@ -215,19 +215,3 @@ with st.expander("Cenário esperado para próxima eleição"):
     st.write("Aumento na oferta: Trump prometeu expandir a produção de petróleo nos EUA, o que pode criar excedentes no mercado.")
     st.write("Demanda global fraca: Especialmente com o enfraquecimento econômico em regiões como a China, reduzindo a pressão sobre os preços.")
     st.write("Flexibilização fiscal: Incentivos aos combustíveis fósseis podem estimular mais produção, pressionando ainda mais os preços.")
-
-
-fig8 = go.Figure()
-fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_futuro['producao'],
-                    mode='lines',
-                    name='Produção'))
-fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_futuro['consumo'],
-                    mode='lines',
-                    name='Consumo'))
-fig8.update_layout(title = 'Previsão de Oferta e Demanda')
-fig8.update_yaxes(title = 'Quantidade - milhões de barris')
-
-
-
-st.plotly_chart(fig8, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
-st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
