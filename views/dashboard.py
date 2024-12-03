@@ -30,6 +30,13 @@ df_prod_consumo['mes'] = pd.to_datetime(df_prod_consumo['mes'])
 df_prod_consumo_passado = df_prod_consumo[df_prod_consumo['mes']<='2023-12-01']
 df_prod_consumo_futuro = df_prod_consumo[df_prod_consumo['mes']>='2024-11-01']
 
+
+df_estoque = pd.read_csv('data/estoque.csv', sep = ',', skiprows=4)
+df_estoque.columns = ('mes', 'quantidade')
+df_estoque['mes'] = pd.to_datetime(df_estoque['mes'])
+df_estoque_futuro = df_estoque[df_estoque['mes']>='2024-11-01']
+
+
 st.title(f"Petróleo Brent", anchor=False)
 st.text("Esta tela apresenta uma análise financeira detalhada do petróleo Brent, com dados históricos e insights gráficos sobre tendências de preços, variações semanais e indicadores-chave. Explore visualizações interativas para acompanhar o desempenho do mercado e tomar decisões informadas com base em dados atualizados.")
 
@@ -135,10 +142,22 @@ fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_fut
 fig8.add_trace(go.Scatter(x=df_prod_consumo_futuro['mes'], y=df_prod_consumo_futuro['consumo'],
                     mode='lines',
                     name='Consumo'))
-fig8.update_layout(title = 'Previsão de Oferta e Demanda')
+fig8.update_layout(title = 'Previsão de Oferta e Demanda - Todos os tipos de petróleo')
 fig8.update_yaxes(title = 'Quantidade - milhões de barris')
 
 
 
 st.plotly_chart(fig8, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
+st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
+
+fig4 = go.Figure()
+fig4.add_trace(go.Scatter(x=df_estoque_futuro['mes'], y=df_estoque_futuro['quantidade'],
+                    mode='lines',
+                    name='Produção'))
+fig4.update_layout(title = 'Previsão dos níveis de estoque de petróleo')
+fig4.update_yaxes(title = 'Quantidade - milhões de barris')
+
+
+
+st.plotly_chart(fig4, use_container_width=False, theme="streamlit", key=None, on_select="ignore", selection_mode=('points', 'box', 'lasso'))
 st.markdown("<p style='text-align: center; color:gray; font-size:12px'>Fonte: U.S. Energy Information Administration (EIA)</p>",  unsafe_allow_html=True)
