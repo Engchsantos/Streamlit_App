@@ -1,13 +1,39 @@
-**TechChallenge - Fase 4**
+# Análise e Previsão do Preço do Petróleo Brent
 
+Este projeto oferece uma solução abrangente que combina **análise histórica**, **previsões de preço** e um **dashboard interativo** sobre o petróleo Brent. Utilizando dados históricos do IPEA e técnicas avançadas de machine learning, a ferramenta proporciona insights estratégicos para empresas do setor energético.
 
+## Objetivo  
+Desenvolver uma aplicação interativa que permita:
+- **Analisar dados históricos** para identificar tendências e padrões.
+- **Visualizar dashboards interativos** que facilitam o entendimento do mercado.
+- **Prever flutuações no preço do Brent**, apoiando a gestão de riscos e oportunidades.
 
-Tech Challenge é um projeto da pós-graduação em Data Analytics da FIAP, que engloba os conhecimentos obtidos nas disciplinas das fases. Nessa fase, o objetivo foi simular que fomos contratados para uma consultoria, e nosso trabalho foi analisar os dados de preço do petróleo Brent para um grande cliente do segmento, desenvolver um dashboard interativo para gerar insights relevantes para tomada de decisão e construir de um modelo de Machine Learning para fazer a previsão do preço do petróleo.
+## Etapas do Projeto  
+### 1. Pipeline de Transformação de Dados  
+- **Preparação**: Limpeza e formatação dos dados, com remoção de valores nulos.  
+- **Preenchimento de Lacunas**: Inclusão de datas ausentes para consistência temporal.  
+- **Suavização**: Estacionarização dos dados para adequação ao modelo ARIMA.  
 
-Para desenvolver esse projeto, foi indicada a base de dados do site do IPEA, onde a partir de uma análise preliminar, definimos os modelos que seriam estudados. Para complementar a análise, fizemos pesquisas sobre a influência do contexto geopolítico e econômico na variação do preço do petróleo.
+### 2. Modelagem  
+Implementação do modelo híbrido **ARIMA + LSTM**, onde:
+- O **ARIMA** captura tendências gerais.
+- O **LSTM** refina as previsões considerando padrões históricos.
 
-Utilizamos uma variedade de modelos de machine learning, incluindo modelos clássicos de séries temporais e a combinação deles, para construir um sistema de previsão robusto. O modelo final apresentou um RMSE de 1.91, superando os modelos anteriores.
+### 3. Desenvolvimento da Aplicação  
+- Construída com **Streamlit**, utilizando o padrão **MVC (Model, View, Controller)** para organização e escalabilidade.  
+- Integração com **Firebase** para atualizações dinâmicas de dados, eliminando a necessidade de novos deploys para cada atualização.
 
-No final, construímos essa apresentação com a utilização da biblioteca Streamlit, onde disponibilizamos o resultado do nosso trabalho.
+### 4. Visualização e Interatividade  
+- Dashboards interativos com análises históricas detalhadas e previsões em tempo real.  
+- Integração de API para consulta de dados atualizados sobre o dólar e o preço do petróleo.
 
-Link da página no Streamlit - https://appapp-9mbfydgpo7kmcptfg8jrwd.streamlit.app/
+## Tecnologias Utilizadas  
+- **Streamlit**: Para o desenvolvimento da interface interativa.  
+- **Firebase**: Para o gerenciamento dinâmico de dados de previsão.  
+- **Python**: Para tratamento de dados e modelagem preditiva.  
+
+## Resultados  
+A aplicação combina **análises históricas detalhadas**, **previsões confiáveis** e uma **interface amigável** para facilitar o acesso às informações. Essa abordagem integrada apoia decisões estratégicas com base em dados sólidos e projeções confiáveis.
+
+## Links  
+- **Aplicação**: [Streamlit App](https://appapp-9mbfydgpo7kmcptfg8jrwd.streamlit.app/)
